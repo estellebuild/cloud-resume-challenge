@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Estelle Foreman — Cloud Engineer</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --black: #111110;
+      --gray: #6b6b68;
+      --light-gray: #e8e6e1;
+      --off-white: #faf9f7;
+      --accent: #1a1a18;
+      --rule: #d4d2cc;
+    }
+
+    body {
+      font-family: 'EB Garamond', Georgia, serif;
+      background: var(--off-white);
+      color: var(--black);
+      font-size: 16px;
+      line-height: 1.6;
+      padding: 60px 24px;
+    }
+
+    .page {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    header {
+      border-bottom: 1.5px solid var(--black);
+      padding-bottom: 24px;
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-family: 'EB Garamond', serif;
+      font-size: 2.6rem;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 10px;
+    }
+
+    .tagline {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 14px;
+    }
+
+    .meta {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+      font-weight: 300;
+      color: var(--gray);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+
+    .meta a {
+      color: var(--gray);
+      text-decoration: none;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .meta a:hover {
+      color: var(--black);
+      border-color: var(--black);
+    }
+
+    /* Visitor counter */
+    .counter-bar {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 300;
+      color: var(--gray);
+      letter-spacing: 0.08em;
+      margin-top: 10px;
+    }
+
+    #visitor-count {
+      color: var(--black);
+      font-weight: 400;
+    }
+
+    /* Sections */
+    section {
+      margin-bottom: 36px;
+    }
+
+    .section-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      font-weight: 400;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--gray);
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--rule);
+    }
+
+    /* Summary */
+    .summary p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: #2a2a28;
+    }
+
+    /* Skills */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 16px;
+    }
+
+    .skill-cat {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      font-weight: 400;
+      color: var(--gray);
+      padding-top: 2px;
+    }
+
+    .skill-val {
+      font-size: 0.9rem;
+      color: var(--black);
+      line-height: 1.5;
+    }
+
+    /* Certs */
+    .cert-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .cert-list li {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+    }
+
+    .cert-name {
+      font-size: 0.95rem;
+    }
+
+    .cert-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gray);
+      white-space: nowrap;
+    }
+
+    /* Projects & Experience */
+    .entry {
+      margin-bottom: 28px;
+    }
+
+    .entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .entry-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 2px;
+      flex-wrap: wrap;
+    }
+
+    .entry-title {
+      font-size: 1rem;
+      font-weight: 500;
+    }
+
+    .entry-date {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--gray);
+      white-space: nowrap;
+    }
+
+    .entry-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gray);
+      margin-bottom: 10px;
+    }
+
+    .entry ul {
+      padding-left: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .entry ul li {
+      font-size: 0.92rem;
+      line-height: 1.65;
+      color: #2a2a28;
+    }
+
+    /* Education */
+    .edu-entry {
+      margin-bottom: 16px;
+    }
+
+    .edu-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+    }
+
+    .edu-sub {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gray);
+      margin-top: 2px;
+    }
+
+    /* Additional */
+    .additional-grid {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 8px 16px;
+    }
+
+    .add-label {
+      font-family: 'DM Mono', monospace;
+      font-size: 0.68rem;
+      color: var(--gray);
+      padding-top: 2px;
+    }
+
+    .add-val {
+      font-size: 0.9rem;
+      color: var(--black);
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .skills-grid, .additional-grid { grid-template-columns: 1fr; gap: 4px; }
+      .skill-cat, .add-label { color: var(--black); }
+      .entry-header { flex-direction: column; gap: 2px; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <p class="tagline">Cloud Engineer &amp; AWS Certified</p>
+    <h1>Estelle Foreman</h1>
+    <div class="meta">
+      <span>Weehawken, NJ — NYC Metro</span>
+      <a href="https://linkedin.com/in/estellets" target="_blank">linkedin.com/in/estellets</a>
+      <span>U.S. Permanent Work Authorization</span>
+    </div>
+    <div class="counter-bar">
+      This résumé has been viewed <span id="visitor-count">—</span> times.
+    </div>
+  </header>
+
+  <section class="summary">
+    <p class="section-label">Summary</p>
+    <p>AWS Certified Cloud Support Engineer with hands-on experience building serverless architectures and supporting 100+ users. Three AWS certifications including Solutions Architect Associate. Proven troubleshooting, IAM security, cost optimization, and CloudWatch observability skills. Strong technical problem-solving with 95% customer satisfaction rating.</p>
+  </section>
+
+  <section>
+    <p class="section-label">Technical Skills</p>
+    <div class="skills-grid">
+      <span class="skill-cat">Cloud platforms</span>
+      <span class="skill-val">AWS — Lambda, S3, DynamoDB, CloudWatch, IAM, API Gateway, Textract, CloudFormation</span>
+
+      <span class="skill-cat">Cloud skills</span>
+      <span class="skill-val">Serverless architecture, event-driven design, Infrastructure as Code, security design, cost optimization</span>
+
+      <span class="skill-cat">Languages</span>
+      <span class="skill-val">Python, Bash, PowerShell, SQL, JSON</span>
+
+      <span class="skill-cat">Operations</span>
+      <span class="skill-val">Troubleshooting, incident response, monitoring, IAM policies, encryption, technical documentation</span>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">AWS Certifications</p>
+    <ul class="cert-list">
+      <li>
+        <span class="cert-name">AWS Certified Solutions Architect — Associate</span>
+        <span class="cert-date">July 2025</span>
+      </li>
+      <li>
+        <span class="cert-name">AWS Cloud Support Associate Professional Certificate</span>
+        <span class="cert-date">September 2025</span>
+      </li>
+      <li>
+        <span class="cert-name">AWS Certified Cloud Practitioner</span>
+        <span class="cert-date">March 2025</span>
+      </li>
+    </ul>
+  </section>
+
+  <section>
+    <p class="section-label">Cloud Engineering Projects</p>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Serverless AI Resume Processing System</span>
+        <span class="entry-date">January 2026</span>
+      </div>
+      <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
+      <ul>
+        <li>Architected serverless, event-driven system using Lambda, S3, DynamoDB, and Textract achieving 100% cost reduction during idle periods with automatic scaling.</li>
+        <li>Implemented least-privilege IAM policies, S3 encryption at rest (SSE-S3), and security boundaries reducing blast radius.</li>
+        <li>Built event-driven processing pipeline with S3 event notifications triggering Lambda functions for zero-latency document processing.</li>
+        <li>Configured CloudWatch logging and metrics for production observability, enabling troubleshooting of case-sensitive S3 prefix mismatches.</li>
+        <li>Executed cost-aware cleanup by removing AWS resources in dependency-aware order preventing orphaned infrastructure.</li>
+      </ul>
+    </div>
+
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Cloud Resume Challenge</span>
+        <span class="entry-date">March 2026</span>
+      </div>
+      <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
+      <ul>
+        <li>Built and deployed a full-stack serverless resume site using S3, CloudFront, API Gateway, Lambda, and DynamoDB.</li>
+        <li>Implemented a live visitor counter backed by DynamoDB with a Python Lambda function and REST API.</li>
+        <li>Automated deployments via GitHub Actions CI/CD pipeline — zero manual uploads after initial setup.</li>
+        <li>Documented architecture decisions, IAM security rationale, and service trade-offs for engineering transparency.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Professional Experience</p>
+    <div class="entry">
+      <div class="entry-header">
+        <span class="entry-title">Technical Support Specialist</span>
+        <span class="entry-date">June 2024 — November 2025</span>
+      </div>
+      <p class="entry-sub">AppWithThat LLC</p>
+      <ul>
+        <li>Provided technical support for 100+ users of cloud-based applications, achieving 95% customer satisfaction through systematic troubleshooting and root cause analysis.</li>
+        <li>Monitored system health dashboards and analyzed logs to diagnose application failures, authentication issues, and performance problems.</li>
+        <li>Collaborated with engineering teams across regions to escalate and resolve complex technical issues while maintaining SLA compliance.</li>
+        <li>Created technical documentation and managed user access control demonstrating IAM-like permission management understanding.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Education &amp; Training</p>
+    <div class="edu-entry">
+      <p class="edu-title">AWS Cloud Institute — Developer Associate Program</p>
+      <p class="edu-sub">October 2025 — June 2026 &nbsp;·&nbsp; Cloud infrastructure, serverless architecture, system monitoring, troubleshooting</p>
+    </div>
+    <div class="edu-entry">
+      <p class="edu-title">Bachelor of Arts in Computer Science (In Progress)</p>
+      <p class="edu-sub">Thomas Edison State University &nbsp;·&nbsp; Expected May 2029</p>
+    </div>
+  </section>
+
+  <section>
+    <p class="section-label">Additional</p>
+    <div class="additional-grid">
+      <span class="add-label">Languages</span>
+      <span class="add-val">Bilingual — French (Native) · English (Fluent)</span>
+
+      <span class="add-label">Availability</span>
+      <span class="add-val">Open to hybrid and remote cloud support roles</span>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  async function updateVisitorCount() {
+    try {
+      const response = await fetch('YOUR_API_GATEWAY_URL_HERE');
+      const data = await response.json();
+      document.getElementById('visitor-count').textContent = data.count.toLocaleString();
+    } catch (err) {
+      document.getElementById('visitor-count').textContent = '—';
+    }
+  }
+  updateVisitorCount();
+</script>
+</body>
+</html>
