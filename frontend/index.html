@@ -391,17 +391,6 @@
 
 </div>
 
-<script>
-  async function updateVisitorCount() {
-    try {
-      const response = await fetch('YOUR_API_GATEWAY_URL_HERE');
-      const data = await response.json();
-      document.getElementById('visitor-count').textContent = data.count.toLocaleString();
-    } catch (err) {
-      document.getElementById('visitor-count').textContent = '—';
-    }
-  }
-  updateVisitorCount();
-</script>
+<script src="counter.js"></script>
 </body>
 </html>
