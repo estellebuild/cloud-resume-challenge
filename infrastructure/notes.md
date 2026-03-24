@@ -24,3 +24,13 @@ Had to add AmazonAPIGatewayAdministrator to estelle-dev
 when setting up API Gateway — same pattern as IAMFullAccess
 for role creation. Least-privilege means adding permissions
 incrementally as needed, not granting everything upfront.
+
+## CloudFront
+Distribution ID: E1B3ZF1S2I3KAH
+Domain: https://d2k170rv12u2vi.cloudfront.net
+Origin: estelle-cloud-resume.s3-website-us-east-1.amazonaws.com
+ViewerProtocolPolicy: redirect-to-https
+Reason: S3 static hosting is HTTP only. CloudFront adds HTTPS,
+global edge caching, and a shareable URL.
+Trade-off: CloudFront adds ~10-15 min propagation delay when
+deploying updates. Mitigated by cache invalidation in CI/CD.
