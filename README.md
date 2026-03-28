@@ -110,3 +110,33 @@ This project runs almost entirely within the AWS Free Tier:
 - API Gateway: Free tier covers 1M HTTP API calls/month
 
 Estimated monthly cost after free tier: **under $1.00**
+
+
+## Infrastructure as Code (Project 3)
+
+The full stack is also available as a CloudFormation template
+at `infrastructure/cloudformation/template.yml`.
+
+One command deploys all eight resources in the correct order:
+
+    aws cloudformation deploy \
+      --template-file infrastructure/cloudformation/template.yml \
+      --stack-name cloud-resume-cfn-stack \
+      --capabilities CAPABILITY_NAMED_IAM \
+      --region us-east-1
+
+### What the template provisions
+- S3 bucket with static website hosting
+- CloudFront HTTPS distribution
+- DynamoDB table (PAY_PER_REQUEST)
+- Lambda function (Python 3.13) with inline code
+- API Gateway HTTP API with GET /count route
+- IAM execution role scoped to exact DynamoDB table ARN
+- Lambda permission for API Gateway invocation
+
+### Key CloudFormation concepts demonstrated
+- Parameters for reusability across environments
+- !Ref and !GetAtt for resource cross-referencing
+- !Sub for dynamic string construction
+- Outputs for automatic value surfacing post-deployment
+- Dependency graph inferred from resource references

@@ -34,3 +34,22 @@ Reason: S3 static hosting is HTTP only. CloudFront adds HTTPS,
 global edge caching, and a shareable URL.
 Trade-off: CloudFront adds ~10-15 min propagation delay when
 deploying updates. Mitigated by cache invalidation in CI/CD.
+
+
+## CloudFormation (Project 3)
+Stack name: cloud-resume-cfn-stack
+Template: infrastructure/cloudformation/template.yml
+Resources: S3, CloudFront, DynamoDB, Lambda, API Gateway, IAM
+CloudFront URL: https://d33ptgd3m4ret9.cloudfront.net
+API Endpoint: https://0tf9ysp368.execute-api.us-east-1.amazonaws.com/prod/count
+
+Decision: Converted the full CLI-built stack to IaC.
+Why: CloudFormation manages dependency order automatically,
+makes the stack reproducible, and reflects how real teams
+manage infrastructure.
+
+Key concepts learned:
+- !Ref, !GetAtt, !Sub intrinsic functions
+- CAPABILITY_NAMED_IAM for IAM resource acknowledgment
+- Outputs for surfacing resource values post-deployment
+- Dependency graph built automatically from references
