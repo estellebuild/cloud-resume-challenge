@@ -1,0 +1,204 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Cloud Resume Challenge - Full Stack Infrastructure
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: cloud-resume
+    Description: Project name used as prefix for all resources
+
+  LambdaFunctionName:
+    Type: String
+    Default: visitor-counter-cfn
+    Description: Name for the Lambda function
+
+Resources:
+
+  # ─── S3 Bucket ───────────────────────────────────────────────
+  ResumeBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub '${ProjectName}-${AWS::AccountId}'
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: index.html
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: false
+        BlockPublicPolicy: false
+        IgnorePublicAcls: false
+        RestrictPublicBuckets: false
+
+  ResumeBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref ResumeBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: PublicReadGetObject
+            Effect: Allow
+            Principal: '*'
+            Action: s3:GetObject
+            Resource: !Sub '${ResumeBucket.Arn}/*'
+
+  # ─── CloudFront ───────────────────────────────────────────────
+  CloudFrontDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: !Sub '${ProjectName} CloudFront Distribution'
+        DefaultRootObject: index.html
+        Origins:
+          - Id: S3Origin
+            DomainName: !Select
+              - 1
+              - !Split ['://', !GetAtt ResumeBucket.WebsiteURL]
+            CustomOriginConfig:
+              HTTPPort: 80
+              HTTPSPort: 443
+              OriginProtocolPolicy: http-only
+        DefaultCacheBehavior:
+          TargetOriginId: S3Origin
+          ViewerProtocolPolicy: redirect-to-https
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6
+          AllowedMethods:
+            - GET
+            - HEAD
+          Compress: true
+
+  # ─── DynamoDB ─────────────────────────────────────────────────
+  VisitorCountTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub '${ProjectName}-visitor-count'
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+
+  # ─── IAM Role for Lambda ──────────────────────────────────────
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub '${ProjectName}-lambda-role'
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: !Sub '${ProjectName}-lambda-policy'
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                Resource: !GetAtt VisitorCountTable.Arn
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: '*'
+
+  # ─── Lambda Function ──────────────────────────────────────────
+  VisitorCounterFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref LambdaFunctionName
+      Runtime: python3.13
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Handler: index.handler
+      Code:
+        ZipFile: |
+          import json
+          import boto3
+          import os
+
+          dynamodb = boto3.resource('dynamodb')
+
+          def handler(event, context):
+              table = dynamodb.Table(os.environ['TABLE_NAME'])
+              response = table.update_item(
+                  Key={'id': 'visitors'},
+                  UpdateExpression='ADD #count :increment',
+                  ExpressionAttributeNames={'#count': 'count'},
+                  ExpressionAttributeValues={':increment': 1},
+                  ReturnValues='UPDATED_NEW'
+              )
+              count = int(response['Attributes']['count'])
+              return {
+                  'statusCode': 200,
+                  'headers': {'Access-Control-Allow-Origin': '*'},
+                  'body': json.dumps({'count': count})
+              }
+      Environment:
+        Variables:
+          TABLE_NAME: !Ref VisitorCountTable
+
+  # ─── API Gateway ──────────────────────────────────────────────
+  VisitorAPI:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub '${ProjectName}-api'
+      ProtocolType: HTTP
+      CorsConfiguration:
+        AllowOrigins:
+          - '*'
+        AllowMethods:
+          - GET
+
+  APIIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref VisitorAPI
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !GetAtt VisitorCounterFunction.Arn
+      PayloadFormatVersion: '2.0'
+
+  APIRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref VisitorAPI
+      RouteKey: GET /count
+      Target: !Sub 'integrations/${APIIntegration}'
+
+  APIStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref VisitorAPI
+      StageName: prod
+      AutoDeploy: true
+
+  LambdaAPIPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt VisitorCounterFunction.Arn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub 'arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${VisitorAPI}/*/*'
+
+Outputs:
+  CloudFrontURL:
+    Description: CloudFront distribution URL
+    Value: !Sub 'https://${CloudFrontDistribution.DomainName}'
+
+  APIEndpoint:
+    Description: API Gateway endpoint
+    Value: !Sub 'https://${VisitorAPI}.execute-api.${AWS::Region}.amazonaws.com/prod/count'
+
+  S3BucketName:
+    Description: S3 bucket name
+    Value: !Ref ResumeBucket
+
+  DynamoDBTableName:
+    Description: DynamoDB table name
+    Value: !Ref VisitorCountTable
