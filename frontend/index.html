@@ -320,46 +320,45 @@
   <section>
     <p class="section-label">Cloud Engineering Projects</p>
    
-   <div class="entry">
-  <div class="entry-header">
-    <span class="entry-title">Cloud Resume Challenge — CloudFormation IaC Extension</span>
-    <span class="entry-date">March 2026</span>
+    <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Cloud Resume Challenge — CloudFormation IaC Extension</span>
+      <span class="entry-date">March 2026</span>
+    </div>
+    <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
+    <ul>
+      <li>Converted full CLI-built stack to a single CloudFormation YAML template provisioning eight resources including S3, CloudFront, Lambda, DynamoDB, API Gateway, and IAM with automatic dependency management.</li>
+      <li>Applied !Ref, !GetAtt, and !Sub intrinsic functions to wire resources together without hardcoding values; used Outputs to surface CloudFront URL and API endpoint automatically post-deployment.</li>
+    </ul>
   </div>
-  <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
-  <ul>
-    <li>Converted full CLI-built stack to a single CloudFormation YAML template provisioning eight resources including S3, CloudFront, Lambda, DynamoDB, API Gateway, and IAM with automatic dependency management.</li>
-    <li>Applied !Ref, !GetAtt, and !Sub intrinsic functions to wire resources together without hardcoding values; used Outputs to surface CloudFront URL and API endpoint automatically post-deployment.</li>
-  </ul>
-</div>
-   
-    <div class="entry">
-      <div class="entry-header">
-        <span class="entry-title">Serverless AI Resume Processing System</span>
-        <span class="entry-date">January 2026</span>
-      </div>
-      <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
-      <ul>
-        <li>Architected serverless, event-driven system using Lambda, S3, DynamoDB, and Textract achieving 100% cost reduction during idle periods with automatic scaling.</li>
-        <li>Implemented least-privilege IAM policies, S3 encryption at rest (SSE-S3), and security boundaries reducing blast radius.</li>
-        <li>Built event-driven processing pipeline with S3 event notifications triggering Lambda functions for zero-latency document processing.</li>
-        <li>Configured CloudWatch logging and metrics for production observability, enabling troubleshooting of case-sensitive S3 prefix mismatches.</li>
-        <li>Executed cost-aware cleanup by removing AWS resources in dependency-aware order preventing orphaned infrastructure.</li>
-      </ul>
-    </div>
 
-    <div class="entry">
-      <div class="entry-header">
-        <span class="entry-title">Cloud Resume Challenge</span>
-        <span class="entry-date">March 2026</span>
-      </div>
-      <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
-      <ul>
-        <li>Built and deployed a full-stack serverless resume site using S3, CloudFront, API Gateway, Lambda, and DynamoDB.</li>
-        <li>Implemented a live visitor counter backed by DynamoDB with a Python Lambda function and REST API.</li>
-        <li>Automated deployments via GitHub Actions CI/CD pipeline — zero manual uploads after initial setup.</li>
-        <li>Documented architecture decisions, IAM security rationale, and service trade-offs for engineering transparency.</li>
-      </ul>
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Cloud Resume Challenge</span>
+      <span class="entry-date">March 2026</span>
     </div>
+    <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
+    <ul>
+      <li>Built and deployed a full-stack serverless resume site using S3, CloudFront, API Gateway, Lambda, and DynamoDB — configured entirely from the AWS CLI with zero console usage.</li>
+      <li>Implemented a live visitor counter backed by DynamoDB with a Python Lambda function and REST API, including atomic increments and CORS configuration.</li>
+      <li>Automated deployments via GitHub Actions CI/CD pipeline — zero manual uploads after initial setup.</li>
+      <li>Documented architecture decisions, IAM security rationale, and service trade-offs for engineering transparency.</li>
+    </ul>
+  </div>
+
+  <div class="entry">
+    <div class="entry-header">
+      <span class="entry-title">Serverless AI Resume Processing System</span>
+      <span class="entry-date">January 2026</span>
+    </div>
+    <p class="entry-sub">Personal Cloud Engineering Project — AWS</p>
+    <ul>
+      <li>Architected serverless, event-driven system using Lambda, S3, DynamoDB, and Textract achieving 100% cost reduction during idle periods with automatic scaling.</li>
+      <li>Implemented least-privilege IAM policies, S3 encryption at rest (SSE-S3), and security boundaries reducing blast radius.</li>
+      <li>Built event-driven processing pipeline with S3 event notifications triggering Lambda functions for zero-latency document processing.</li>
+      <li>Configured CloudWatch logging and metrics for production observability, enabling troubleshooting of case-sensitive S3 prefix mismatches.</li>
+    </ul>
+  </div>
   </section>
 
   <section>
