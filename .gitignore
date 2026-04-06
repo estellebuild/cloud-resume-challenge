@@ -1,2 +1,5 @@
 backend/function.zip
 backend/output.json
+.terraform/
+.terraform.lock.hcl
+/tmp/lambda.zip

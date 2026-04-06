@@ -53,3 +53,36 @@ Key concepts learned:
 - CAPABILITY_NAMED_IAM for IAM resource acknowledgment
 - Outputs for surfacing resource values post-deployment
 - Dependency graph built automatically from references
+
+
+## Terraform (Project 4)
+Stack: infrastructure/terraform/
+Resources: S3, CloudFront, DynamoDB, Lambda, API Gateway, IAM
+CloudFront URL: https://dl20w1pqc121e.cloudfront.net
+API Endpoint: https://1jg5zpbssl.execute-api.us-east-1.amazonaws.com/prod/count
+DynamoDB Table: cloud-resume-tf-visitor-count
+S3 Bucket: cloud-resume-tf-898319808606
+
+Decision: Converted full stack to Terraform HCL.
+Why: Terraform is cloud-agnostic unlike CloudFormation which
+is AWS-only. Adds HCL, state management, and terraform plan
+workflow to skill set.
+
+Key differences from CloudFormation:
+- HCL syntax instead of YAML
+- terraform plan shows exact changes before applying
+- State file tracks real-world infrastructure locally
+- Resource references use dot notation (aws_s3_bucket.resume.arn)
+  instead of !GetAtt
+- No CAPABILITY_NAMED_IAM flag needed
+- Works across AWS, Azure, GCP
+
+Key concepts learned:
+- providers.tf — tells Terraform which cloud platform to use
+- variables.tf — equivalent to CloudFormation Parameters
+- main.tf — all resources defined in HCL
+- outputs.tf — equivalent to CloudFormation Outputs
+- data sources — read-only lookups (aws_caller_identity, archive_file)
+- depends_on — explicit dependency when references are not enough
+- jsonencode() — converts HCL objects to JSON for AWS policies
+- source_code_hash — detects Lambda code changes automatically

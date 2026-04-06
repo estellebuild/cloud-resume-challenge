@@ -140,3 +140,35 @@ One command deploys all eight resources in the correct order:
 - !Sub for dynamic string construction
 - Outputs for automatic value surfacing post-deployment
 - Dependency graph inferred from resource references
+
+
+## Terraform (Project 4)
+
+The full stack is also available as a Terraform configuration
+at `infrastructure/terraform/`.
+
+Four commands to deploy:
+
+    cd infrastructure/terraform
+    terraform init
+    terraform plan
+    terraform apply
+
+### What the configuration provisions
+- S3 bucket with static website hosting
+- CloudFront HTTPS distribution
+- DynamoDB table (PAY_PER_REQUEST)
+- Lambda function (Python 3.13) with inline code
+- API Gateway HTTP API with GET /count route
+- IAM execution role scoped to exact DynamoDB table ARN
+- Lambda permission for API Gateway invocation
+
+### Key Terraform concepts demonstrated
+- providers.tf for AWS provider configuration
+- variables.tf for reusable input variables
+- outputs.tf for automatic value surfacing post-deployment
+- Data sources for read-only AWS lookups
+- Resource references using dot notation
+- depends_on for explicit dependency management
+- jsonencode() for inline IAM policy documents
+- source_code_hash for Lambda code change detection
